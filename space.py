@@ -1,6 +1,5 @@
 import sys
 import numpy as np 
-import matplotlib.pyplot as plt
 from scipy import constants
 
 class VectorField:
@@ -98,6 +97,7 @@ class EMSpace(Space):
     @_get_updated_coefficient
     def set_epsr(self):
         pass
+        # self.epsr[54:74,54:74,54:74] = 4
     
     @_get_updated_coefficient    
     def set_mur(self):
@@ -120,7 +120,6 @@ class EMSpace(Space):
         self.E.z[:,-1,:] = 0
 
     def set_PML(self, depth, direction):
-        
         self.calculate_PML_region = 1
         self.PMLdirection = direction
         self.depth = depth
@@ -219,7 +218,6 @@ class EMSpace(Space):
             self.E.y[:,:,-self.depth:] += self.Cb[:,:,-self.depth:] * self.psi_Eyz1
             self.E.x[:,:,-self.depth:] -= self.Cb[:,:,-self.depth:] * self.psi_Exz1
 
-
     def updateH(self):
         self.H.x[:-1, :-1, :-1] = ((self.Da * self.H.x)[:-1, :-1, :-1] 
                              - (self.Db[:-1, :-1, :-1] * 
@@ -265,9 +263,9 @@ class EMSpace(Space):
             self.H.x[:,:,-self.depth:] += self.Db[:,:,-self.depth:] * self.psi_Hxz1
     
     def put_source(self):
+        self.E.z[:,:,:] = 0
         self.E.y[:,:,:] = 0
-        self.E.x[:,:,:] = 0
-        self.E.z[64,64,12] = np.sin(2*np.pi*2*(10**12)*self.t)
+        self.E.x[12,100,95] = np.sin(2*np.pi*3*(10**12)*self.t)
     
     def step(self):
         self.updateH()
@@ -279,7 +277,7 @@ class EMSpace(Space):
 
 
 if __name__ == '__main__':
-    shape = (128,128,24)    
+    shape = (24,128,128)    
     um = 1e-6
     dx = 10 * um
     dy = 10 * um
@@ -288,12 +286,15 @@ if __name__ == '__main__':
 
     space = EMSpace(shape, dx, dy, dz, dt)
     space.set_PML(depth=10, direction='xyz')
+    space.set_epsr()
 
-    if __name__ == '__main__':
-        import tqdm
-        for i in range(1000):
-            space.step()
-            if i % 10 == 0:
-                plt.imshow(space.E.z[:,:,12])
-                plt.show()
-        
+    import tqdm
+    import matplotlib.pyplot as plt
+    
+    for i in range(1000):
+        space.step()
+        if i % 10 == 0:
+            plt.imshow(space.E.x[12,:,:], vmax =1, vmin= -1)
+            plt.show()
+            
+    
