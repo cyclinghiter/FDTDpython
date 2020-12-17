@@ -101,19 +101,18 @@ class EMSpace(Space):
                         / (2*self.mu0 * self.mur)))
         
     def _get_updated_coefficient(func):
-        def wrapper(self):
-            func(self)
+        def wrapper(self, value):
+            func(self, value)
             self.update_coefficient()
         return wrapper 
     
     @_get_updated_coefficient
-    def set_epsr(self):
-        pass
-        # self.epsr[54:74,54:74,54:74] = 4
+    def set_epsr(self, value):
+        self.epsr = value
     
-    @_get_updated_coefficient    
-    def set_mur(self):
-        pass
+    @_get_updated_coefficient
+    def set_mur(self, value):
+        return self.mur
     
     def apply_PEC(self):
         self.E.x[:,0,:] = 0
