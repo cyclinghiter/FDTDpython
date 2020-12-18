@@ -20,7 +20,6 @@ class rectangle(structure):
         min_y, max_y =  center[1] - depth //2 , center[1] + depth //2
         min_z, max_z =  center[1] - height //2 , center[1] + height //2
         
-        
         self.epsr[min_x:max_x, min_y:max_y, min_z:max_z] = eps
         self.mur[min_x:max_x, min_y:max_y, min_z:max_z] = mu
         

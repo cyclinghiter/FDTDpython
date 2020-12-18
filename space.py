@@ -3,6 +3,7 @@ import numpy as np
 from scipy import constants
 from system import deprecated
 
+
 class VectorField:
     def __init__(self, shape):
         self.shape = shape
@@ -42,7 +43,7 @@ class PMLParameter(Space):
         self.sigmamax = - (self.grading_order + 1) * np.log(self.rc0) / (2 * self.imp0 * self.width)
         self.kappamax = 1
         self.alphamax = 0.02
-        
+        print(self.sigmamax)
         self.sigma_even = np.zeros(depth)
         self.kappa_even = np.zeros(depth)
         self.alpha_even = np.zeros(depth)

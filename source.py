@@ -7,8 +7,8 @@ def f0(t):
     return 0
 
 class Source:
-    def __init__(self, E_x = f0, E_y = f0, E_z = f0):
-        self.positions = {}
+    def __init__(self, x, y, z, E_x = f0, E_y = f0, E_z = f0):
+        self.positions = {'x' : x, 'y' : y, 'z' : z}
         self.E_x = E_x
         self.E_y = E_y
         self.E_z = E_z
@@ -19,13 +19,12 @@ class Source:
         self.z = self.E_z(t)
         
 class PointSource(Source):
-    def __init__(self, position, E_x = f0, E_y = f0, E_z = f0):
-        super(PointSource, self).__init__(E_x, E_y, E_z)
-        self.positions = {'x' : position[0], 'y' : position[1], 'z' : position[2]}
+    def __init__(self, x, y, z, E_x = f0, E_y = f0, E_z = f0):
+        super(PointSource, self).__init__(x, y, z, E_x, E_y, E_z)
         
 class LineSource(Source):
     def __init__(self, direction, E_x=f0, E_y=f0, E_z=f0, x = None, y = None, z = None):
-        super(LineSource, self).__init__(E_x, E_y, E_z)
+        super(LineSource, self).__init__(x, y, z, E_x, E_y, E_z)
         if direction == 'x':
             if x != None or y == None or z == None:
                 raise ValueError()
@@ -41,7 +40,7 @@ class LineSource(Source):
             
 class PlaneSource(Source):
     def __init__(self, direction, E_x=f0, E_y=f0, E_z=f0, x = None, y = None, z = None):
-        super(PlaneSource, self).__init__(E_x, E_y, E_z)
+        super(PlaneSource, self).__init__(x, y, z, E_x, E_y, E_z)
         if direction == 'xy':
             if x != None or y != None or z == None:
                 raise ValueError()
@@ -74,5 +73,4 @@ if __name__ == '__main__':
     temp[x,y,z] = plane.z
 
     E_z[x,y,z] = temp[x,y,z]
-
 
