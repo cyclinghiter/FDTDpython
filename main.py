@@ -25,10 +25,13 @@ def function(t):
 
 solver = Solver(TF=TF, SF=SF, IF=IF)
 
-s1 = PlaneSource(direction = 'xy', z=40, E_x = function)
+s1 = PlaneSource(direction = 'xy', z=20, E_x = function)
 solver.append_source(s1)
 
-str1 = rectangle(shape = shape, center = (64,64,64), depth=30, width=30, height=30, eps=4, mu=1)
+# str1 = Rectangle(shape = shape, center = (32,32,32), depth=5, width=5, height=5, eps=4, mu=1)
+# solver.append_structure(str1)
+
+str1 = Sphere(shape = shape, center = (64,64,64), R = 10, eps=4, mu=1)
 solver.append_structure(str1)
 
 solver.set_PML(depth=10, direction='xyz')

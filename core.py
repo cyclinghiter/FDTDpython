@@ -27,7 +27,6 @@ class Solver:
             self.IF = IF 
             self.field_to_update = [self.IF]
             self.field_to_state = []
-            
         
         self.sources = []
         self.structures = []
@@ -94,4 +93,4 @@ class Solver:
             self.SF.H.y = self.TF.H.y - self.IF.H.y
             self.SF.H.z = self.TF.H.z - self.IF.H.z
     
-        
+            

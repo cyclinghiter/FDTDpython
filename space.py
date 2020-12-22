@@ -43,7 +43,6 @@ class PMLParameter(Space):
         self.sigmamax = - (self.grading_order + 1) * np.log(self.rc0) / (2 * self.imp0 * self.width)
         self.kappamax = 1
         self.alphamax = 0.02
-        print(self.sigmamax)
         self.sigma_even = np.zeros(depth)
         self.kappa_even = np.zeros(depth)
         self.alpha_even = np.zeros(depth)
@@ -286,14 +285,14 @@ class EMSpace(Space):
             self.H.y[:,:,-self.depth:-1] -= self.Db[:,:,-self.depth:-1] * self.psi_Hyz1[:,:,1:]
             self.H.x[:,:,-self.depth:-1] += self.Db[:,:,-self.depth:-1] * self.psi_Hxz1[:,:,1:]
     
-    @deprecated
-    def put_source(self):
-        '''
-        deprecated
-        '''
-        self.E.x[:,:,:] = 0
-        self.E.y[:,:,:] = 0
-        self.E.z[32,32,12] = np.sin(2*np.pi*3*(10**12)*self.t)
+    # @deprecated
+    # def put_source(self):
+    #     '''
+    #     deprecated
+    #     '''
+    #     self.E.x[:,:,:] = 0
+    #     self.E.y[:,:,:] = 0
+    #     self.E.z[32,32,12] = np.sin(2*np.pi*3*(10**12)*self.t)
     
     def step(self):
         self.updateH()
@@ -301,8 +300,7 @@ class EMSpace(Space):
         # self.t += self.dt
         # self.put_source()
         # self.apply_PEC()
-
-
+        
 if __name__ == '__main__':
     shape = (64,64,24)    
     um = 1e-6
@@ -313,14 +311,15 @@ if __name__ == '__main__':
 
     space = EMSpace(shape, dx, dy, dz, dt)
     space.set_PML(depth=5, direction='xyz')
-    space.set_epsr()
 
     import tqdm
     import matplotlib.pyplot as plt
     
     for i in range(1000):
         space.step()
-        if i % 10 == 0:
-            plt.imshow(space.E.z[:,:,12])
-            plt.show()
+        if i % 50 == 0:
+            fig, ax = plt.subplots()
+            ax.imshow(space.E.z[:,:,12], vmax=1, vmin=-1)
+            ax.set_ylim(ax.get_ylim()[::-1])
+            plt.savefig("space{}.png".format(i))
             

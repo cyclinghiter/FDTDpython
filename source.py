@@ -54,7 +54,6 @@ class PlaneSource(Source):
                 raise ValueError()
             self.positions = {'z' : z ,'x' : x, 'y' : y}
 
-
 if __name__ == '__main__':
 
     def function(t):
