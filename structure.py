@@ -46,7 +46,12 @@ class Sphere(structure):
         self.r = np.sqrt((self.center[1]-X)**2 + (self.center[0]-Y)**2 + (self.center[2]-Z)**2)
         self.region = np.where(self.r > self.R, 0, 1)
         self.epsr += self.region * (self.eps - 1)
-        smoothing_region = 1 - np.where((0 < (self.r - self.R)) & ((self.r - self.R) < 1), 1/2*np.abs(self.r-self.R), 1)
+        smoothing_region = 1 - (np.where((0 < (self.r - self.R)) & ((self.r - self.R) < 1), 1/3*(self.r+np.sqrt(self.r**2-1)-2*self.R)**2, 1))
         self.epsr += smoothing_region * (self.eps - 1)
         del self.r
         
+St = Sphere(shape=(64,64,64), center=(32,32,32), R=15, eps=4, mu=1)
+plt.imshow(St.epsr[32], vmax=4, vmin=1)
+plt.show()
+
+print(St.epsr[32])
